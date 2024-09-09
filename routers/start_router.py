@@ -50,6 +50,8 @@ https://onlinetestpad.com/gnk76aqcoc7s6""",
     else:
         await state.update_data(type=type_prof)
         await state.set_state(UserState.use_bot)
-        await call.message.answer("Отлично! Мы это запоминим и сможем сформировать список, подходящий именно вам!",
+        await call.message.answer("Отлично! Мы это запомним и сможем сформировать список, подходящий именно "
+                                  "вам!\nДля навигации можно использовать клавиатуру, находящуюся под строкой ввода.\n"
+                                  "Если клавитауру не видно, нажмите на кнопку в правой части строки ввода",
                                   reply_markup=keyboard.main_keyboard())
 

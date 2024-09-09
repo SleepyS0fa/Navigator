@@ -11,13 +11,37 @@ db = __client = AsyncIOMotorClient(settings.DB)
 
 
 async def start():
-    await change_data()
+    await set_desc()
 
 
 async def change_data():
-    # await change_prof_name_and_code()
-    # await hash_college_name()
     await change_name_college()
+
+
+async def set_desc():
+    tempdata = await db.get_database(DATABASE).get_collection("temp").find().to_list(1000)
+    for item in tempdata:
+        code = re.match("(\d{2}\.\d{2}\.\d{2}|\d{5}) ", item.get("prof"))
+        print(item["prof"])
+        if code is None:
+            continue
+        item["prof"] = item["prof"].replace(code.group(0), "")
+        await db.get_database(DATABASE).get_collection("temp").replace_one({"_id": item.get("_id")}, item)
+
+
+    all_data = await db.get_database(DATABASE).get_collection(COLLECTION).find().to_list(1000)
+    for item in all_data:
+        prof_name = item["prof"]
+        obj_desc = await db.get_database(DATABASE).get_collection("temp").find_one({"prof": prof_name})
+        if obj_desc is None:
+            print("notFound")
+            continue
+
+        print(obj_desc.keys())
+        item["type_desc"] = obj_desc["type_desc"]
+        item["desc"] = obj_desc["desc"]
+        print("replace: " + item["type"])
+        await db.get_database(DATABASE).get_collection(COLLECTION).replace_one({"_id": item["_id"]}, item)
 
 
 async def change_name_college():
@@ -31,7 +55,7 @@ async def change_name_college():
                 print("replace")
 
 
-async def change_prof_name_and_code(self):
+async def change_prof_name_and_code():
     all_data = await db.get_database(DATABASE).get_collection(COLLECTION).find().to_list(1000)
     regex = r"(?:(?:\d{2}\.?){2}\d{2})|\d{5}"
 

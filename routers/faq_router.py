@@ -1,5 +1,4 @@
 from aiogram import Router, F
-from aiogram.filters import Filter
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, CallbackQuery
 
