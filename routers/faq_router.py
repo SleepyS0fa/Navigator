@@ -19,8 +19,11 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     faq_list = await db.get_faq_question_list(limit=STEP, skip=0)
     count = await db.get_faq_count()
     await state.update_data(pointer_faq=STEP, count_faq=count)
-    await message.answer("Здесь список самых часто задаваемых вопросов.\nЕсли же нужного вопроса нет, то можно "
-                         "обратиться к нам напрямую\n Телефон: +9(999) 999-99-99 \n Почта: edu@example.com",
+    await message.answer("""
+Здесь список самых часто задаваемых вопросов. Если же нужного вопроса нет, то можно обратиться к нам напрямую
+Телефон: @mariyakross
+Почта: mariya.kross@mail.ru
+    """,
                          reply_markup=keyboard.page_faq_keyboard(faq_list))
 
 

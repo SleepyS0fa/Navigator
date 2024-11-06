@@ -79,7 +79,6 @@ class MongoDB:
         co = await (self.__client.get_database(self.__database).get_collection(self.__collection)
                     .aggregate([{"$skip": skip}, {"$limit": limit}, {"$project": {"answer": 0}}])
                     .to_list(1000))
-        print(co)
         return co
 
 
@@ -90,3 +89,11 @@ class MongoDB:
     async def get_faq_question(self, _id: str):
         return await (self.__client.get_database(self.__database).get_collection(self.__collection)
                       .find_one({"_id": ObjectId(_id)}))
+
+    async def get_type_desc(self, type: str):
+        return await (self.__client.get_database(self.__database).getcollection(self.__collection)
+                      .find_one({"type": type}))
+
+    async def get_prof_desc(self, code: str):
+        return await (self.__client.get_database(self.__database).getcollection(self.__collection)
+                      .find_one({"code": code}))

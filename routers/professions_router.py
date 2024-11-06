@@ -27,7 +27,6 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
 async def select_prof(call: CallbackQuery, state: FSMContext) -> None:
     request_code = call.data.replace("cbprof_", "")
     collage_list = await db.get_college_by_code(request_code)
-
     for college in collage_list:
         text = college["college"] + "\n"
         text += college["code"] + " " + college["prof"] + "\n"
